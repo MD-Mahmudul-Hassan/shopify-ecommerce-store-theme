@@ -1,0 +1,109 @@
+ <div class="row-line line-item-1">     
+    <div class="title left-column">    
+    </div>
+    <div class="title right-column"> 
+      	<p><strong><a href="{{ section.settings.clickHereLink }}" title="{{ section.settings.clickHereLink }}">{{ section.settings.clickHereText }}</a></strong></p>     
+    </div>
+  </div>
+  
+   <div class="row-line line-item-2">     
+      <div class="title left-column">
+        <h2 class="h2">{{ section.settings.returnsTitle }}</h2>
+      </div>
+      <div class="title right-column"> 
+        {{ section.settings.returnsContent }}   
+      </div>
+  </div>
+  
+   <div class="row-line line-item-3">     
+    <div class="title left-column">   
+      <h2 class="h2">{{ section.settings.shippingTitle }}</h2>
+    </div>
+    <div class="title right-column">       
+      	<p>{{ section.settings.shippingContent }}</p>   
+    </div>
+  </div>
+
+   <div class="row-line line-item-4">     
+    <div class="title left-column">   
+      <h2 class="h2">{{ section.settings.internationalShippingTitle }}</h2>
+    </div>
+    <div class="title right-column">       
+      	<p>{{ section.settings.internationalShippingContent }}</p>   
+    </div>
+  </div>
+  
+   <div class="row-line line-item-5">     
+    <div class="title left-column">
+      <h2 class="h2">{{ section.settings.faqTitle }}</h2>
+    </div>
+    <div class="title right-column">       
+      	<p>{{ section.settings.faqContent }}</p>  
+    </div>
+  </div>
+
+
+
+{% schema %}
+  {
+    "name": "Shipping and Returns",
+    "settings": [
+		{
+			"type": "text",
+      		"id": "clickHereLink",
+      		"label":"Click Here Link"
+		},
+		{
+			"type": "text",
+      		"id": "clickHereText",
+      		"label":"Click Here Text"
+		},
+		{
+			"type": "text",
+      		"id": "returnsTitle",
+      		"label":"Returns Title"
+		},
+		{
+			"type": "textarea",
+      		"id": "returnsContent",
+      		"label":"Returns Content"
+		},
+		{
+			"type": "text",
+      		"id": "shippingTitle",
+      		"label":"Shipping Title"
+		},
+		{
+			"type": "textarea",
+      		"id": "shippingContent",
+      		"label":"Shipping Content"
+		},
+		{
+			"type": "text",
+      		"id": "internationalShippingTitle",
+      		"label":"International Shipping Title"
+		},
+		{
+			"type": "textarea",
+      		"id": "internationalShippingContent",
+      		"label":"International Shipping Content"
+		},
+		{
+			"type": "text",
+      		"id": "faqTitle",
+      		"label":"Faq Title"
+		},
+		{
+			"type": "textarea",
+      		"id": "faqContent",
+      		"label":"Faq Content"
+		}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,35 @@
+{% assign custombuilder = shop.metafields.customproductbuilder %}
+
+{% if custombuilder %}
+
+  {% assign productEditor = custombuilder.productEditor %}
+
+	{% assign productList = productEditor | split: ',' %}
+	{% assign productId = product.id | append: '' %}
+
+	{% if productList contains productId%}
+
+		{{ 'https://code.jquery.com/jquery-3.0.0.min.js' | script_tag }}
+		{{ 'https://cdn.shopify.com/s/assets/external/app.js' | script_tag }}
+
+		{{ 'customproductbuilder.css' | asset_url | stylesheet_tag }}
+
+		<div
+		id="product-builder"
+		shop-name="{{shop.permanent_domain}}"
+		product-id="{{product.id}}"
+		styles-path="{{'customproductbuilder.css' | asset_url }}"
+		data-cpb-user-id="{{customer.id}}"
+        data-cpb-configuration-url={{ product.metafields.customproductbuilder['configurableUrl'] }}
+		></div>
+
+		{{ 'https://master.thecustomproductbuilder.com/dist/custom-product-builder.js' | script_tag }}
+		{{ 'https://master.thecustomproductbuilder.com/dist/customizer-theme-main.js'| script_tag }}
+
+	{% else %}
+		{% section 'product-template' %}
+	{% endif %}
+
+{% else %}
+  {% section 'product-template' %}
+{% endif %}

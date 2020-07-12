@@ -1,0 +1,115 @@
+<div class="grid-view-item{% unless product.available %} grid-view-item--sold-out{% endunless %} product-card" data-product-card>
+  <a class="grid-view-item__link grid-view-item__image-container full-width-link" href="{{ product.url | within: collection }}">
+    <span class="visually-hidden">{{ product.title }}</span>
+  </a>
+
+  {% capture img_id %}ProductCardImage-{{ section.id }}-{{ product.id }}{% endcapture %}
+  {% capture wrapper_id %}ProductCardImageWrapper-{{ section.id }}-{{ product.id }}{% endcapture %}
+  {%- assign img_url = product.featured_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+
+  {% unless product.featured_image == blank %}
+    {% include 'image-style' with image: product.featured_image, width: max_height, height: max_height, small_style: true, wrapper_id: wrapper_id, img_id: img_id %}
+  {% endunless %}
+
+  <div class="product-card__image-with-placeholder-wrapper" data-image-with-placeholder-wrapper>
+    <div id="{{ wrapper_id }}" class="grid-view-item__image-wrapper product-card__image-wrapper js">
+      <div style="padding-top:{% unless product.featured_image == blank %}{{ 1 | divided_by: product.featured_image.aspect_ratio | times: 100 }}%{% else %}100%{% endunless %};">
+        <img id="{{ img_id }}"
+              class="grid-view-item__image lazyload"
+              alt="{{ product.featured_image.alt }}"
+              data-src="{{ img_url }}"
+              data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+              data-aspectratio="{{ product.featured_image.aspect_ratio }}"
+              data-sizes="auto"
+              data-image>
+      </div>
+    </div>
+    <div class="placeholder-background placeholder-background--animation" data-image-placeholder></div>
+  </div>
+
+  <noscript>
+    {% capture image_size %}{{ max_height }}x{{ max_height }}{% endcapture %}
+    <img class="grid-view-item__image" src="{{ product.featured_image.src | img_url: image_size, scale: 2 }}" alt="{{ product.featured_image.alt }}" style="max-width: {{ max_height | times: product.featured_image.aspect_ratio }}px;">
+  </noscript>
+
+  <div class="h4 grid-view-item__title product-card__title" aria-hidden="true">{{ product.title }}</div>
+
+  {% include 'product-price', variant: product.selected_or_first_available_variant %}
+  
+<div id="dis_pro_{{product.id}}" class="overlay size color-hover-items">                        
+      {% for option in product.options %}                                   
+      {% assign index = forloop.index0 %}
+      {% assign colorlist = '' %}
+      {% assign color = '' %}
+      {% for variant in product.variants %}
+      {% assign count = 0 %}
+      {% capture color %}
+      {{ variant.options[index] }}
+      {% endcapture %}                                        
+      {% unless colorlist contains color %}                                               
+      
+                  {% if color contains "L" or color contains "M" or color contains "XS" or color contains "S"%}
+                            {% assign count = 1 %}                                  
+                          {% endif %}
+                  
+                  
+                          {% if color contains "Citron" %}
+                            {% assign count = 1 %}
+                                  <a translatable href="{{product.url}}"> <span onmouseover="hoverEffect(this)" data-pid="{{product.id}}" class="replace_{{product.id}} {{color}} color-hover" id="{{ variant.id }}" data-variant="{{ product.url | within: collection | append: '?variant=' }}{{ variant.id }}" style="background-color:#C8CD15; background-image: url({{ color | downcase | handle |append: '.png' | asset_url }});" data-image="{{ variant.image.src}}" ></span></a>                                                                 
+                          {% endif %}
+             
+                      {% if color contains "Poppy" %}
+                            {% assign count = 1 %}
+                                  <a translatable href="{{product.url}}"> <span onmouseover="hoverEffect(this)" data-pid="{{product.id}}" class="replace_{{product.id}} {{color}} color-hover" id="{{ variant.id }}" data-variant="{{ product.url | within: collection | append: '?variant=' }}{{ variant.id }}" style="background-color:#E73146; background-image: url({{ color | downcase | handle |append: '.png' | asset_url }});" data-image="{{ variant.image.src}}" ></span></a>                                                                 
+                          {% endif %}
+             
+                      {% if color contains "Apricot" %}
+                            {% assign count = 1 %}
+                                  <a translatable href="{{product.url}}"> <span onmouseover="hoverEffect(this)" data-pid="{{product.id}}" class="replace_{{product.id}} {{color}} color-hover" id="{{ variant.id }}" data-variant="{{ product.url | within: collection | append: '?variant=' }}{{ variant.id }}" style="background-color:#F5A386; background-image: url({{ color | downcase | handle |append: '.png' | asset_url }});" data-image="{{ variant.image.src}}" ></span></a>                                                                 
+                          {% endif %}
+             
+                      {% if color contains "Ivory" %}
+                            {% assign count = 1 %}
+                                  <a translatable href="{{product.url}}"> <span onmouseover="hoverEffect(this)" data-pid="{{product.id}}" class="replace_{{product.id}} {{color}} color-hover" id="{{ variant.id }}" data-variant="{{ product.url | within: collection | append: '?variant=' }}{{ variant.id }}" style="background-color:#DFD7C3; background-image: url({{ color | downcase | handle |append: '.jpg' | asset_url }});" data-image="{{ variant.image.src}}" ></span></a>                                                                 
+                          {% endif %}
+                                                 
+                          {% if color contains "Red" %}
+                            {% assign count = 1 %}
+                                  <a translatable href="{{product.url}}"> <span onmouseover="hoverEffect(this)" data-pid="{{product.id}}" class="replace_{{product.id}} {{color}} color-hover" id="{{ variant.id }}" data-variant="{{ product.url | within: collection | append: '?variant=' }}{{ variant.id }}" style="background-color:#8f2e1a; background-image: url({{ color | downcase | handle |append: '.png' | asset_url }});" data-image="{{ variant.image.src}}" ></span></a>                                                                                                                                                                                       
+                          {% endif %}
+                  
+                          {% if color contains "Lapis" %}
+                            {% assign count = 1 %}                      
+                                  <a translatable href="{{product.url}}"> <span onmouseover="hoverEffect(this)" data-pid="{{product.id}}" class="replace_{{product.id}} {{color}} color-hover" id="{{ variant.id }}" data-variant="{{ product.url | within: collection | append: '?variant=' }}{{ variant.id }}" style="background-color:#0011A4; background-image: url({{ color | downcase | handle |append: '.png' | asset_url }});" data-image="{{ variant.image.src}}" ></span></a>                                                                                                                                                                                       
+                          {% endif %}
+                  
+                          {% if color contains "Marina" %}
+                            {% assign count = 1 %}
+                                  <a translatable href="{{product.url}}"> <span onmouseover="hoverEffect(this)" data-pid="{{product.id}}" class="replace_{{product.id}} {{color}} color-hover" id="{{ variant.id }}" data-variant="{{ product.url | within: collection | append: '?variant=' }}{{ variant.id }}" style="background-color:#058BC2; background-image: url({{ color | downcase | handle |append: '.png' | asset_url }});" data-image="{{ variant.image.src}}" ></span></a>                                                                 
+                          {% endif %}
+                  
+                          {% if color contains "Sky" %}
+                            {% assign count = 1 %}
+                                  <a translatable href="{{product.url}}"> <span onmouseover="hoverEffect(this)" data-pid="{{product.id}}" class="replace_{{product.id}} {{color}} color-hover" id="{{ variant.id }}" data-variant="{{ product.url | within: collection | append: '?variant=' }}{{ variant.id }}" style="background-color:#6B9FD8; background-image: url({{ color | downcase | handle |append: '.png' | asset_url }});" data-image="{{ variant.image.src}}" ></span></a>
+                          {% endif %}
+                  
+                          {% if color contains "Olive" %}
+                            {% assign count = 1 %}
+                                  <a translatable href="{{product.url}}"> <span onmouseover="hoverEffect(this)" data-pid="{{product.id}}" class="replace_{{product.id}} {{color}} color-hover" id="{{ variant.id }}" data-variant="{{ product.url | within: collection | append: '?variant=' }}{{ variant.id }}" style="background-color:#515C42; background-image: url({{ color | downcase | handle |append: '.png' | asset_url }});" data-image="{{ variant.image.src}}" ></span></a>                                                                                                                                                                                       
+                          {% endif %}
+                    
+                          {% if count == 0 %}
+                            <a translatable href="{{product.url}}"> <span onmouseover="hoverEffect(this)" data-pid="{{product.id}}" class="replace_{{product.id}} {{color}} color-hover" id="{{ variant.id }}" data-variant="{{ product.url | within: collection | append: '?variant=' }}{{ variant.id }}" style="background-color:{{ color | downcase | handle}}; background-image: url({{ color | downcase | handle |append: '.png' | asset_url }});" data-image="{{ variant.image.src}}" ></span></a>  
+                        {% endif%}  
+
+      {% capture tempList %}
+      {{colorlist | append: color | append: ''}}
+      {% endcapture %}
+
+      {% assign colorlist = tempList %}
+      {% endunless %}
+      {% endfor %}                  
+      {% endfor %}                       
+    </div> 
+
+ 

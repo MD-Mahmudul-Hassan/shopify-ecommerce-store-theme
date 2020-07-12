@@ -1,0 +1,305 @@
+<!doctype html>
+<html class="no-js" lang="{{ shop.locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_button }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {%- if settings.favicon != blank -%}
+    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+  {%- endif -%}
+
+  {%- capture seo_title -%}
+    {%- if template == 'search' and search.performed == true -%}
+      {{ 'general.search.heading' | t: count: search.results_count }}: {{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
+    {%- else -%}
+      {{ page_title }}
+    {%- endif -%}
+    {%- if current_tags -%}
+      {%- assign meta_tags = current_tags | join: ', ' -%} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+    {%- endif -%}
+    {%- if current_page != 1 -%}
+      &ndash; {{ 'general.meta.page' | t: page: current_page }}
+    {%- endif -%}
+    {%- assign escaped_page_title = page_title | escape -%}
+    {%- unless escaped_page_title contains shop.name -%}
+      &ndash; {{ shop.name }}
+    {%- endunless -%}
+  {%- endcapture -%}
+  <title>{{ seo_title | strip }}</title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  {% include 'social-meta-tags' %}
+
+  {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+
+  <script>
+    var theme = {
+      strings: {
+        addToCart: {{ 'products.product.add_to_cart' | t | json }},
+        soldOut: {{ 'products.product.sold_out' | t | json }},
+        unavailable: {{ 'products.product.unavailable' | t | json }},
+        regularPrice: {{ 'products.product.regular_price' | t | json }},
+        sale: {{ 'products.product.on_sale' | t | json }},
+        showMore: {{ 'general.filters.show_more' | t | json }},
+        showLess: {{ 'general.filters.show_less' | t | json }},
+        addressError: {{ 'sections.map.address_error' | t | json }},
+        addressNoResults: {{ 'sections.map.address_no_results' | t | json }},
+        addressQueryLimit: {{ 'sections.map.address_query_limit_html' | t | json }},
+        authError: {{ 'sections.map.auth_error_html' | t | json }},
+        newWindow: {{ 'general.accessibility.link_messages.new_window' | t | json }},
+        external: {{ 'general.accessibility.link_messages.external' | t | json }},
+        newWindowExternal: {{ 'general.accessibility.link_messages.new_window_and_external' | t | json }},
+        quantityMinimumMessage: {{ 'products.product.quantity_minimum_message' | t | json }},
+        unitPrice: {{ 'products.product.unit_price_label' | t | json }},
+        unitPriceSeparator: {{ 'general.accessibility.unit_price_separator' | t | json }},
+        oneCartCount: {{ 'cart.popup.cart_count' | t: count: 1 | json }},
+        otherCartCount: {{ 'cart.popup.cart_count' | t: count: '[count]' | json }},
+        quantityLabel: {{ 'cart.popup.quantity_label' | t: quantity_count: '[count]' | json }}
+      },
+      moneyFormat: {{ shop.money_format | json }}
+    }
+
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+  </script>
+
+
+  {%- if template.directory == 'customers' -%}
+    <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+  {%- endif -%}
+	{{ 'jquery-2.2.3.min.js' | asset_url | script_tag }}
+  <script src="{{ 'lazysizes.js' | asset_url }}" async="async"></script>
+  <script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+   {{ "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" | stylesheet_tag }}
+  {{ "https://code.jquery.com/jquery-1.10.2.js" | script_tag }}
+  {{ "https://code.jquery.com/ui/1.10.4/jquery-ui.js" | script_tag }}
+   {{ "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css" | stylesheet_tag }}
+  {{ "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css" | stylesheet_tag }}
+  {{ "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js" | script_tag }}
+
+  {{ content_for_header }}
+{% include 'globo.filter.script' %}
+  
+  <script type="text/javascript" src="https://variant-image-automator.starapps.studio/product_variants.js?shop={{shop.permanent_domain}}" async></script>
+</head>
+
+<body class="template-{{ template | split: '.' | first }}">
+
+  <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
+  <div id="SearchDrawer" class="search-bar drawer drawer--top" role="dialog" aria-modal="true" aria-label="{{ 'general.search.placeholder' | t }}">
+    <div class="search-bar__table">
+      <div class="search-bar__table-cell search-bar__form-wrapper">
+        <form class="search search-bar__form" action="{{ routes.search_url }}" method="get" role="search">
+          <input class="search__input search-bar__input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" aria-label="{{ 'general.search.placeholder' | t }}">
+          <button class="search-bar__submit search__submit btn--link" type="submit">
+            {% include 'icon-search' %}
+            <span class="icon__fallback-text">{{ 'general.search.submit' | t }}</span>
+          </button>
+        </form>
+      </div>
+      <div class="search-bar__table-cell text-right">
+        <button type="button" class="btn--link search-bar__close js-drawer-close">
+          {% include 'icon-close' %}
+          <span class="icon__fallback-text">{{ 'general.search.close' | t }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {% include 'cart-popup' %}
+
+  {% section 'header' %}
+
+  <div class="page-container" id="PageContainer">
+
+    <main class="main-content js-focus-hidden" id="MainContent" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer' %}
+
+    <div id="slideshow-info" class="visually-hidden" aria-hidden="true">
+      {{- 'sections.slideshow.navigation_instructions' | t -}}
+    </div>
+
+  </div>
+
+  <ul hidden>
+    <li id="a11y-refresh-page-message">{{ 'general.accessibility.refresh_page' | t }}</li>
+    <li id="a11y-selection-message">{{ 'general.accessibility.selection_help' | t }}</li>
+  </ul>
+  
+  <script>
+    jQuery(window).scroll(function() {
+      $(".logo_list").slick({
+          // normal options...
+          infinite: true,
+      	   arrows: false,
+		   autoplay:false,
+        	autoplaySpeed: 2000,
+			slidesToShow: 6,
+      		dots: false,
+          // the magic
+          responsive: [
+      		{
+              breakpoint: 992,
+              settings: {
+                infinite: true,
+      			arrows: false,
+      			dots: false,
+      			autoplay:false,
+                slidesToShow: 3
+              }
+            },
+          {
+              breakpoint: 481,
+              settings: {
+                infinite: true,
+      			arrows: false,
+      			dots: false,
+      			autoplay:false,
+                slidesToShow: 2
+              }
+            }]
+        });
+  	});
+    
+    $(function() {
+    $('.mobile-nav > li').click(function(e) {
+        e.stopPropagation();
+        var $el = $('ul',this);
+        $('.mobile-nav > li > ul').not($el).slideUp();
+        $el.stop(true, true).slideToggle(400);
+        if ($(this).hasClass("open")) {
+          $(this).removeClass("open");
+        }
+      	else
+        {
+          $(this).addClass("open");
+        }
+    });
+        $('.mobile-nav > li > ul > li').click(function(e) {
+        e.stopImmediatePropagation();  
+    });
+      
+      
+      jQuery('<span class="size_span"><a href="#">Size guide</a></span>').insertAfter('select.option_Size');
+      
+});
+
+    
+     function sticky_description() {
+        var length = $('#shopify-section-product-template').innerHeight() - $('#prod_description').innerHeight() + $('#shopify-section-product-template').offset().top;
+        var toplength = $('#shopify-section-product-template').innerHeight() - $('#prod_description').innerHeight() - 50;
+        
+        
+        $(window).scroll(function () {
+			
+          var scroll = $(this).scrollTop();
+          //console.log('scroll: '+scroll+ ' Lenght:' + length+ ' toplength: '+toplength+' ' +$('#shopify-section-product-template').innerHeight()+' ' +$('#prod_description').height());
+			console.log($('#thumbnails-wrapper').height() + ' > ' + $('#prod_description').height());
+            if (scroll < $('#shopify-section-product-template').offset().top) {
+
+              $('#prod_description').css({
+                'position': 'absolute',
+                'top': '75px',
+                'width':'100%',
+                'max-width':'825px'
+              });
+
+            } else if (scroll > length) {
+
+              $('#prod_description').css({
+                'position': 'absolute',
+                'top': toplength,
+                'width':'100%',
+                'max-width':'825px'
+              });
+
+            } else {
+
+              $('#prod_description').css({
+                'position': 'fixed',
+                'top': '0',
+                'width':'100%',
+                'max-width':'825px'
+              });
+            }
+          
+        });
+      }
+    
+    $(window).load(function () {
+        var whole_height = $('#shopify-section-product-template').height();
+      var Content_height = $('#prod_description').height();
+       if(whole_height > Content_height)
+      {
+          sticky_description();
+      }
+        
+      }); 
+    
+    jQuery(document).on('click','#swatch_pswatchdiv .swatchy_pcolordiv', function() {
+      var whole_height = $('#shopify-section-product-template').height();
+      var Content_height = $('#prod_description').height();
+       if(whole_height > Content_height)
+      {
+          sticky_description();
+      }
+    });
+    
+    
+    
+//     $(function() {
+//     var top = $('.product-single__meta').offset().top - parseFloat($('.product-single__meta').css('marginTop').replace(/auto/, 0));
+//     var footTop = $('.related_products').offset().top - parseFloat($('.related_products').css('marginTop').replace(/auto/, 0));
+// 	var product_desc_height = $('.product-single__meta').innerHeight() - 500;
+       
+//     var maxY = footTop - $('.product-single__meta').outerHeight() - product_desc_height;
+
+//     $(window).scroll(function(evt) {
+//         var y = $(this).scrollTop();
+//         if (y > top) {
+            
+//             if (y < maxY) {
+//                 $('.product-single__meta').addClass('fixed').removeAttr('style');
+//             } else {
+
+//                 $('.product-single__meta').removeClass('fixed').css({
+//                     position: 'absolute',
+//                     top: (maxY - top) + 'px',
+//                       width: '43%'
+//                 });
+//             }
+//         } else {
+//             $('.product-single__meta').removeClass('fixed');
+//         }
+//     });
+// });
+    
+  </script>
+  
+  <script>
+$(function() {
+    $('.js-mobile-nav-toggle').on('click', function() {
+        $('body').toggleClass('menu-open');
+    })
+});
+
+</script>
+  
+  
+{% include 'globo.filter.action' %}
+	{% include 'productpageswatchsnippet' %}
+  {% include 'swatchyappvariables' %}
+  
+<!--   {% include 'linked-options' %} -->
+  </body>
+</html>

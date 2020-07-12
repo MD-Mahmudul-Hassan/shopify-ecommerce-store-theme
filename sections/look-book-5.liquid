@@ -1,0 +1,93 @@
+<div  class="page-width">
+<div id="grid-container">
+  {% for block in section.blocks %}
+  <a href="{{ block.settings.link }}"><img src="{{ block.settings.image | img_url: "master" }}" alt="" class="grid-item" /></a>
+  {% endfor %}
+</div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function(event) { 
+  var parameters = {
+    gridContainer: '#grid-container',
+    gridItems: '.grid-item',
+    enableImagesLoaded: true
+  };
+  var grid = new justifiedGrid(parameters);
+  $('body').imagesLoaded( function() {
+    grid.initGrid();
+  });
+});
+</script>
+<style>
+#grid-container {
+  width: 90%;
+  margin: auto;
+  overflow: hidden;
+}
+
+.grid-item {
+  opacity: 0;
+  float: left;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.grid-item img {
+  width: 100%;
+  height: 100%;
+}
+
+.grid-item.loaded {
+  opacity: 1;
+  transition: opacity .5s;
+}
+</style>
+{% if section.blocks.size == 0 %}
+  {% include 'no-blocks' %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Look Book",
+    "class": "index-section index-section-look-book",
+    "settings": [
+      
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+		  {
+            "type": "text",
+            "id": "link",
+            "label": "Link",
+            "default": "#"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Look Book",
+        "category": "Image",
+        "blocks": [
+          {
+            "type": "image"
+          },
+          {
+            "type": "image"
+          },
+          {
+            "type": "image"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

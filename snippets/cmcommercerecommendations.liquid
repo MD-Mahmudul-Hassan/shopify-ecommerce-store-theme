@@ -1,0 +1,16 @@
+{% if cmcommercerecommendations %}
+  {% assign widgetName = cmcommercerecommendations %}
+{% else -%}
+  {% assign widgetName = 'default' %}
+{% endif -%}
+<div class="rf-recommendations {{ widgetName | prepend: 'rf-' }}" data-name="{{ widgetName }}"{% if cmcommerceproductid %} data-product="{{ cmcommerceproductid }}"{% endif %}></div>
+<script>
+if (typeof window.CMCommerceData === 'undefined') {
+  window.CMCommerceData = {};
+}
+
+window.CMCommerceData.product = '{{ product.id }}';
+window.CMCommerceData.customer = '{{ customer.id }}';
+window.CMCommerceData.cart = '{{ cart.items | map: 'product' | map: 'id' | join: ',' }}';
+window.CMCommerceData.recommend = true;
+</script>

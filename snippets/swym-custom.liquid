@@ -1,0 +1,22 @@
+<script defer>
+  function swymCallbackFn(swat){
+    if(!qvMutations){
+      var qvMutations = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.attributeName !== null) {
+            if (mutation.target.classList.contains("modal-open")) {
+              swat.initializeActionButtons(".quick-view-modal.gf-modal");
+            }
+          }
+        })
+      });
+      qvMutations.observe(document.querySelector("body"), {childList : true, attributes: true, subtree: true})
+    }
+
+  }
+
+  if(!window.SwymCallbacks){
+    window.SwymCallbacks = [];
+  }
+  window.SwymCallbacks.push(swymCallbackFn);
+</script>

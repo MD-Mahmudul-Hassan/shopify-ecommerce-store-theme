@@ -1,0 +1,136 @@
+<div  class="page-width new_arriaval_product">
+  {% if section.settings.title != blank %}
+    <div class="section-header text-center">
+      <h2>{{ section.settings.title | escape }}</h2>
+    </div>
+  {% endif %}
+<div id="grid-container">
+  {% for block in section.blocks %}
+  <a href="{{ block.settings.link }}">
+    <div id="{{ wrapper_id }}" class="grid-view-item__image-wrapper product-card__image-wrapper js">
+    <img id="{{ img_id }}"
+         class="grid-view-item__image lazyload"
+         alt="{{ product.featured_image.alt }}"
+         data-src="{{ block.settings.image | img_url: "master" }}"
+         data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+         data-aspectratio="{{ product.featured_image.aspect_ratio }}"
+         data-sizes="auto"
+         data-image>      
+    </div>
+    <div class="product_name" aria-hidden="true">{{ block.settings.productName }}</div>
+    <div class="product_price" aria-hidden="true">${{ block.settings.productPrice }}</div>
+  </a> 
+  {% endfor %}
+</div>
+</div>
+<style>
+#grid-container {
+  width: 90%;
+  margin: auto;
+  overflow: hidden;
+}
+
+.grid-item {
+  opacity: 0;
+  float: left;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.grid-item img {
+  width: 100%;
+  height: 100%;
+}
+
+.grid-item.loaded {
+  opacity: 1;
+  transition: opacity .5s;
+}
+</style>
+{% if section.blocks.size == 0 %}
+  {% include 'no-blocks' %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "new arrival",
+    "class": "index-section index-section-look-book",
+	"max_blocks": 4,
+    "settings": [
+      {
+      "type": "text",
+      "id": "title",
+      "label": {
+        "de": "Titel",
+        "en": "Heading",
+        "es": "Título",
+        "fr": "En-tête",
+        "it": "Heading",
+        "ja": "見出し",
+        "nl": "Kop",
+        "pt-BR": "Título",
+        "zh-CN": "标题",
+        "zh-TW": "標題"
+      },
+      "default": {
+        "de": "Featured Kategorie",
+        "en": "Featured collection",
+        "es": "Colección destacada",
+        "fr": "Collection vedette",
+        "it": "Collezione in evidenza",
+        "ja": "特集コレクション",
+        "nl": "Uitgelichte collectie",
+        "pt-BR": "Coleção em destaque",
+        "zh-CN": "特色产品系列",
+        "zh-TW": "精選商品系列"
+      }
+    }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+		  {
+            "type": "text",
+            "id": "link",
+            "label": "Link",
+            "default": "#"
+          },
+		  {
+            "type": "text",
+            "id": "productName",
+            "label": "Product Name"
+          },
+		  {
+            "type": "text",
+            "id": "productPrice",
+            "label": "Product Price"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "new arrival",
+        "category": "Image",
+        "blocks": [
+          {
+            "type": "image"
+          },
+          {
+            "type": "image"
+          },
+          {
+            "type": "image"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

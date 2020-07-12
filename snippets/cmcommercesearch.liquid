@@ -1,0 +1,14 @@
+{% if cmcommercesearchselector %}
+  {% assign selector = cmcommercesearchselector %}
+{% else -%}
+  {% assign selector = 'input[name="q"]' %}
+{% endif -%}
+<script>
+if (typeof window.CMCommerceData === 'undefined') {
+  window.CMCommerceData = {};
+}
+
+window.CMCommerceData.search = {
+  searchFieldSelector: '{{ selector }}'
+};
+</script>

@@ -1,0 +1,10 @@
+{% assign widgetSlug = cmcommercefeedback %}
+
+<div class="rf-feedback" data-slug="{{ widgetSlug }}"></div>
+
+<script>
+if (typeof window.CMCommerceData === 'undefined') {
+  window.CMCommerceData = {};
+}
+window.CMCommerceData.feedback = true;
+</script>
